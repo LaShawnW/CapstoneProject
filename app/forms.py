@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField,SelectField,TextAreaField
+from wtforms import StringField, PasswordField, BooleanField,SelectField,TextAreaField, SubmitField
 from wtforms.validators import InputRequired,DataRequired, Email
-from flask_wtf.file import FileField, FileRequired, FileAllowed
+
 
 
 class UserRegistration(FlaskForm):
@@ -11,7 +11,12 @@ class UserRegistration(FlaskForm):
  email = StringField('Email', validators=[DataRequired(), Email()])
  password= PasswordField("Password", validators=[InputRequired()])
 
+ submit = SubmitField("Add Account")
+
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember me')
+
+class PostForm(Form):
+    content = TextAreaField("Type your destination here", validators=[DataRequired(),])

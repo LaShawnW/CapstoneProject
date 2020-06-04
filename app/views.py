@@ -1,18 +1,18 @@
-from app import app,db, login_manager
-from flask import Flask ,render_template, request, redirect, url_for, flash
+from app import app, db, login_manager
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.security import check_password_hash
 import datetime
 from app.models import Users
-from app.forms import LoginForm,UserRegistration
+from app.forms import LoginForm, UserRegistration
 import stripe
 import time
-
 from flask_socketio import SocketIO,emit,join_room
 
 public_key = 'pk_test_l5lotlN2Ys6OhMMYi6p7Wq7m00yAMKQtNO'
 stripe.api_key = "	sk_test_W5gBcbCxQipyN94e9pPWm3Bu00Tfhvtrwk"
 socketio=SocketIO(app )
+
 
 ###
 # Routing for your application.
@@ -20,37 +20,29 @@ socketio=SocketIO(app )
 @app.route('/')
 def home():
     return render_template('home.html')
+
     
-@app.route('/register', methods=['GET','POST'])
-def register():
-    """accepts user information and save it to the database"""  
-    form=UserRegistration()
-    # now = datetime.datetime.now()
-    if request.method == 'POST' and form.validate_on_submit():
-        firstname = form.firstname.data
-        lastname = form.lastname.data
-       
-        gender = form.gender.data 
-        email = form.email.data
-        password = form.password.data
-
-        NewProfile = Users(id=id,firstname=firstname, lastname=lastname,gender=gender,email=email,password=password)
-
-        db.session.add(NewProfile)
-        db.session.commit()
-        
-        return redirect(url_for('register', firstname=firstname,lastname=lastname,gender=gender,  email=email,password=password ))
-    return render_template('addprofile.html', form=form)
-
+@app.route('/myaccount')
+@login_required
+def account():
+    """Render a secure page on our website that only logged in users can access."""
+    return render_template('myaccount.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm()
-    if request.method == 'POST' and form.validate_on_submit():
-        email = form.email.data
-        password = form.password.data 
+    if current_user.is_authenticated:
+        
+        return redirect(url_for('account'))
 
-        user = Users.query.filter_by(email=email).first()
+
+    form = LoginForm()
+
+    if request.method == 'POST' and form.validate_on_submit():
+        if form.email.data:
+            email = form.email.data
+            password = form.password.data 
+
+            user = Users.query.filter_by(email=email).first()
 
         if user is not None and check_password_hash(user.password, password):
             remember_me = False
@@ -60,14 +52,15 @@ def login():
 
 
             login_user(user, remember=remember_me)
+            next_page = request.args.get('next')
+
+            print (next_page)
 
             flash('Logged in successfully.', 'success')
-
-            next_page = request.args.get('next')
-            return redirect(next_page or url_for('home'))
-
+            return redirect(next_page or url_for("account"))
         else:
-                flash('Username or Password is incorrect.', 'danger')
+            flash('Username or Password is incorrect.', 'danger')
+
 
     flash_errors(form)
     return render_template('login.html', form=form)
@@ -82,14 +75,37 @@ def logout():
     return redirect(url_for('home'))
 
 
-# This callback is used to reload the user obje
+
+@app.route('/register', methods=['GET','POST'])
+def register():
+    """accepts user information and save it to the database"""  
+    form=UserRegistration()
+    # now = datetime.datetime.now()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            firstname = form.firstname.data
+            lastname = form.lastname.data
+            gender = form.gender.data 
+            email = form.email.data
+            password = form.password.data
+
+            user = Users(firstname,lastname,gender,email,password)
+
+            db.session.add(user)
+            db.session.commit()
+
+            flash('User information submitted successfully.', 'success')
+        else:
+            flash('User information not submitted', 'danger')
+        
+        return redirect(url_for("login"))
+    return render_template("register.html", form=form)
 
 
-# @app.route('/')
-# def first():
-#     """Render website's home page."""
-#     date = format_date_joined()
-#     return render_template('first.html',date=date,public_key=public_key)
+
+@login_manager.user_loader
+def load_user(id):
+    return Users.query.get(int(id))
 
 
 @app.route('/chat2')
@@ -106,17 +122,44 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
     print('received my event: ' + str(json))
     socketio.emit('my response', json, callback=messageReceived)
 
+@app.route('/reservation', methods=('GET', 'POST'))
+def index():
+    map_center = (17.9951, -76.7846)
+    form = forms.PostForm()
+    locations, contents = get_signs_of_center()
 
-# @app.route('/')
-# def home():
-#     """Render website's home page."""
-    
-#     return render_template('index.html')
+    if form.validate_on_submit():
+        addr = form.content.data.strip()
+        location = None
+        try:
+            location = geolocator.geocode(addr)
+            if not location:
+                flash("Something wrong with your address typed or your network problem ", "error")
+        except:
+            flash("Something wrong with your address typed or your network problem ", "error")
+
+        if location:
+            map_center = location.latitude, location.longitude
+            locations, contents = get_signs_of_center(map_center[0], map_center[1])
+
+    return render_template('parking_signs.html', form=form,
+                           lat=map_center[0], lng=map_center[1],
+                           locations=locations, contents=contents)
 
 
-@login_manager.user_loader
-def load_user(id):
-    return UserProfile.query.get(int(id))
+def get_signs_of_center(center_lat=17.9951, center_lng=-76.7846, zoom=18):
+    with open('parkingsigns.csv') as f:
+        signs_reader = csv.reader(f)
+        locations, contents = [], []
+        for row in signs_reader:
+            lat, lng = float(row[0]), float(row[1])
+            if abs(lat - center_lat) + abs(lng - center_lng) <= (0.05 / zoom):
+                locations.append((lat, lng))
+                contents.append(row[2])
+
+        return locations, contents
+
+
 
 def flash_errors(form):
     for field, errors in form.errors.items():
