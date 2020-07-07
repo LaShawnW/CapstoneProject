@@ -4,41 +4,76 @@ html, body{
     background-repeat: no-repeat;
     height:100%;
     font-family: 'Numans', sans-seriff;
+    overflow: hidden;
 }
 
-.form{
+body .form{
+
+}
+
+.login-form {
+    background: none;
+    vertical-align: middle;
+}
+.form {
+    
+    border-radius: 25px;
+    position: relative;
+   /* position: center;*/
     height: 50%;
     align-content: center;
+    /*margin-top: 100px;
+    margin-left: 50px;
+    margin-right: 50px; */
     margin-top: 100px;
     margin-left: 50px;
     margin-right: 50px;
     border-width: 45px;
     border-left: 50px ;
     border-style: solid;
-    color: bisque;
-    flex: ;
+    color: rgb(228, 193, 150);
+    display: inline-block;
+} 
+label{
+    color: cornflowerblue;
 }
 
-.login-form center-block{
-    height: auto;
-    align-content: center;
+.container{
+    height: 100%;
+    /*align-content: center; 
+    vertical-align: middle; */
+    display: block;
+
+    margin-left: 15%;
+    margin-bottom: 20%;
 }
+
+
 .form-group{
     align-content: center;
     height: auto;
-    margin: none;
+    background: none;
+    color: rgb(22, 18, 255);
+           /*margin: none; */
     width: 250px;
-    background-color: rgba(86, 208, 224, 0.5);
-}
+      /* background-color: rgba(86, 208, 224, 0.5); */
+   text-decoration-color: rgb(22, 18, 255); 
+} 
+
 
 .btn{
     color: black;
     background-color: rgb(22, 18, 255);
     width: 100px;
     align-content: center;
+    float: right;
+   
     
 }
 h2{
     text-align: center;
+    color: rgb(4, 39, 155);
+    font-weight: bold;
 }
+
 

@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% block main %}
+<head>
+    <title>Sign Up</title>
+</head>
     <div>
         <form action="{{ url_for('register') }}" method="post" enctype="multipart/form-data">
                 {{ form.csrf_token }}
