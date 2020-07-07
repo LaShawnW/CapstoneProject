@@ -4,7 +4,7 @@ body {
   line-height: 1.5;
   /* background-image: url({{ url_for('static', filename='css/background.jpg') }}) */
   /* background-color: yellow; */
-   background-image: url("/static/css/back.jpg");
+   background-image: url("/static/css/city.jpg");
    background-repeat: no-repeat;
    background-attachment: fixed;
    background-size: cover;
@@ -12,7 +12,13 @@ body {
    background-color: #f5efe6;
 }
 
-
+.form{
+  height: 370px;
+  margin-top: auto;
+  margin-bottom: auto;
+  width: 400px;
+  background-color: rgba(0,0,0,0.5);
+}
 
 
 
