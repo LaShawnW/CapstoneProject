@@ -8,53 +8,14 @@ body {
    background-repeat: no-repeat;
    background-attachment: fixed;
    background-size: cover;
-
-
+   padding-top: 5rem;
+   background-color: #f5efe6;
 }
 
-.container {
-  max-width: 960px;
-  margin: 0 auto;
-}
 
-.profinfo{
-    margin-bottom: 15px;
-}
 
-.profinfo{
-    margin-bottom: 15px;
-}
 
-.profinfo{
-    margin-bottom: 15px;
-}
 
-.profinfo{
-    margin-bottom: 15px;
-}
-
-.profinfo input{
-    width: 350px;
-    display: block;
-}
-
-.profinfo input[type=submit]{
-    color: white;
-    background-color:  #32CD32;
-    border: none;
-    border-radius: 5px;
-    font-size: 10px;
-    font-weight: bold;
-    width: 100px;
-    height: 30px;
-    margin-top: 10px;
-} 
-
-.profile{
-    font-weight: 900;
-    font-size: 14px;
-    margin: 0 0 4px 20px;
-}
 /* #body{
   background-image: url({{ url_for('static', filename='css/background.jpg') }})
   background-image: url('/css/background.jpg')"
@@ -68,3 +29,8 @@ body {
   background-repeat: no repeat;
 
 } */
+
+
+
+
+

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block main %}
+
+ <h2>Reservation</h2>
+        {% include 'flash_messages.html' %} 
+        <form action="{{ url_for('reserve') }}" method="post">
+        {{ form.csrf_token }}
+        <div class="profinfo">
+            {{form.starttime.label(class="label")}}
+            {{form.starttime(class="res_class", placeholder= "eg. 1:30pm")}}
+        </div>
+        <div class="profinfo">
+            {{form.startdate.label(class="label")}}
+            {{form.startdate(class="res_class")}}
+
+        </div>
+        <div class="profinfo">
+            {{form.endtime.label(class="label")}}
+            {{form.endtime(class="res_class", placeholder= "eg. 2:30pm")}}
+        </div>
+        <div class="profinfo">
+            {{form.enddate.label(class="label")}}
+            {{form.enddate(class="res_class")}}
+        </div>
+        <div class="profinfo">
+            {{form.parkinglots.label(class="label")}}
+            {{form.parkinglots(class="res_class", default="Select a parking lot")}}
+        </div>
+        <div class="profinfo">
+            {{form.licenseplateno.label(class="label")}}
+            {{form.licenseplateno(class="res_class", placeholder= "eg. 2340LW")}}
+        </div>
+        <div class="profinfo">
+            {{form.typeofparking.label(class="label")}}
+            {{form.typeofparking(class="res_class")}}
+        </div>
+        <div class="profinfo">
+            {{form.submit}}
+        </div>
+
+{% endblock %}

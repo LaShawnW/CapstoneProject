@@ -1,40 +1,31 @@
 {% extends 'base.html' %}
 {% block main %}
- <div id="head">
-     <br>
-    <br>
-    <br>
-    <h1> <strong>Create your Account</strong></h1>
-    <br>
-    <div id="profilemain"> 
-        <div id="form">
-            <form action="{{ url_for('register') }}" method="post" enctype="multipart/form-data">
+    <div>
+        <form action="{{ url_for('register') }}" method="post" enctype="multipart/form-data">
                 {{ form.csrf_token }}
-            <div class="profinfo">
+            <div>
                 {{form.firstname.label(class="label")}}
                 {{form.firstname(class="prof_class")}}
             </div>
-            <div class="profinfo">
+            <div>
                 {{form.lastname.label(class="label")}}
                 {{form.lastname(class="prof_class")}}
             </div>
-            <div class="profinfo">
+            <div>
                 {{form.gender.label(class="label")}}
                 {{form.gender(class="prof_class",default="Select Gender")}}
             </div>
-            <div class="profinfo">
+            <div>
                 {{form.email.label(class="label")}}
                 {{form.email(class="prof_class",placeholder="e.g. jdoe@example.com")}}
             </div>
-            <div class="profinfo">
+            <div>
                 {{form.password.label(class="label")}}
                 {{form.password(class="prof_class")}}
             </div>
-            <div class="profinfo">
+            <div>
                 {{form.submit}}
             </div>
         </form>
-        </div>
     </div>
- </div>
- {% endblock %}
+{% endblock %}

@@ -4,11 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO
 from flask_migrate import Migrate
 import stripe 
-from flask_googlemaps import GoogleMaps
-from geopy.geocoders import GoogleV3
-import csv
-import sys
-import logging
+
 
 
 
@@ -22,9 +18,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True  # added just to suppress a 
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-
-GoogleMaps(app)
-geolocator = GoogleV3()
 
 
 # Flask-Login login manager

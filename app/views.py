@@ -4,7 +4,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.security import check_password_hash
 import datetime
 from app.models import Users
-from app.forms import LoginForm, UserRegistration
+from app.forms import LoginForm, UserRegistration, ReservationForm
 import stripe
 import time
 from flask_socketio import SocketIO,emit,join_room
@@ -21,7 +21,10 @@ socketio=SocketIO(app )
 def home():
     return render_template('home.html')
 
-    
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 @app.route('/myaccount')
 @login_required
 def account():
@@ -102,6 +105,38 @@ def register():
     return render_template("register.html", form=form)
 
 
+@app.route('/reserve', methods=['GET','POST'])
+def reserve():
+    """accepts user information and save it to the database"""  
+    form=ReservationForm()
+    # now = datetime.datetime.now()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            starttime = form.starttime.data
+            startdate = form.startdate.data
+            endtime = form.endtime.data 
+            enddate = form.enddate.data
+            parkinglots = form.parkinglots.data
+            typeofparking = form.typeofparking.data
+            licenseplateno = form.licenseplateno.data
+
+            reservation = Reservations(starttime,startdate,endtime,enddate,parkinglots,typeofparking, licenseplateno)
+
+            db.session.add(reservation)
+            db.session.commit()
+
+            flash ('Congrats! You have successfully made your reservation.', 'success')
+        else:
+            flash('Oh no! Looks like this parking lot is full. Please try another.', 'danger')
+        
+        return redirect(url_for("account"))
+    return render_template("reserve.html", form=form)
+
+'''def checkspaces():
+    parking = ParkingLots.query.all()
+
+    if '''
+
 
 @login_manager.user_loader
 def load_user(id):
@@ -121,53 +156,14 @@ def messageReceived(methods=['GET', 'POST']):
 def handle_my_custom_event(json, methods=['GET', 'POST']):
     print('received my event: ' + str(json))
     socketio.emit('my response', json, callback=messageReceived)
-
-@app.route('/reservation', methods=('GET', 'POST'))
-def index():
-    map_center = (17.9951, -76.7846)
-    form = forms.PostForm()
-    locations, contents = get_signs_of_center()
-
-    if form.validate_on_submit():
-        addr = form.content.data.strip()
-        location = None
-        try:
-            location = geolocator.geocode(addr)
-            if not location:
-                flash("Something wrong with your address typed or your network problem ", "error")
-        except:
-            flash("Something wrong with your address typed or your network problem ", "error")
-
-        if location:
-            map_center = location.latitude, location.longitude
-            locations, contents = get_signs_of_center(map_center[0], map_center[1])
-
-    return render_template('parking_signs.html', form=form,
-                           lat=map_center[0], lng=map_center[1],
-                           locations=locations, contents=contents)
-
-
-def get_signs_of_center(center_lat=17.9951, center_lng=-76.7846, zoom=18):
-    with open('parkingsigns.csv') as f:
-        signs_reader = csv.reader(f)
-        locations, contents = [], []
-        for row in signs_reader:
-            lat, lng = float(row[0]), float(row[1])
-            if abs(lat - center_lat) + abs(lng - center_lng) <= (0.05 / zoom):
-                locations.append((lat, lng))
-                contents.append(row[2])
-
-        return locations, contents
-
+    
 
 
 def flash_errors(form):
     for field, errors in form.errors.items():
         for error in errors:
-            flash(u"Error in the %s field - %s" % (
-                getattr(form, field).label.text,
-                error
-            ), 'danger')
+            flash(u"Error in the %s field - %s" % (getattr(form, field).label.text,error), 'danger')
+
 
 def format_date_joined():
     datetime.datetime.now()

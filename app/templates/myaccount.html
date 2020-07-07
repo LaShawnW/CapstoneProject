@@ -1,7 +1,29 @@
 {% extends "base.html" %}
 
 {% block main %}
-  <h1><img src="{{ url_for('static', filename="logo.png") }}" /> Secure Page</h1>
-  {% include 'flash_messages.html' %}
-  <div class="alert alert-info">Hello {{ current_user.username }}! This page is a secure page, it should only be accessible if you are logged in.</div>
+  <div class="card">
+    <div class="card-header">Reservations</div>
+    <div class="card-body">
+      <h5 class="card-title">Make your reservations now!</h5>
+      <p class="card-text">Avoid joining long lines and not having a parking spot.</p>
+      <a href="{{ url_for('reserve') }}" class="btn btn-primary">Reserve</a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">Add Credit Card</div>
+    <div class="card-body">
+      <h5 class="card-title">Add a credit card to your account!</h5>
+      <p class="card-text">Avoid hassle and add your credit card to your account.</p>
+      <a href="#" class="btn btn-primary">Add Card</a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">Account Details</div>
+    <div class="card-body">
+      <h5 class="card-title">View your account now!</h5>
+      <p class="card-text">Want to view or edit your account? Click here.</p>
+      <a href="#" class="btn btn-primary">Edit Account</a>
+    </div>
+  </div>
+
 {% endblock %}
