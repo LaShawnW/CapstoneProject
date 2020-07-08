@@ -2,8 +2,12 @@
 {% block main %}
 <head>
     <title>Sign Up</title>
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/register.css') }}">
+  
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
 </head>
-    <div>
+
+ <!--   <div>
         <form action="{{ url_for('register') }}" method="post" enctype="multipart/form-data">
                 {{ form.csrf_token }}
             <div>
@@ -30,5 +34,87 @@
                 {{form.submit}}
             </div>
         </form>
-    </div>
+    </div> -->
+
+    <div class="container">
+        <div class="main">
+            <div class="main-center">
+            <h5>Sign up with Easy Parking today.</h5>
+                <!--<form class="" method="post" action="#">-->
+                <form action="{{ url_for('register') }}" method="post" enctype="multipart/form-data">
+                {{ form.csrf_token }}   
+                    
+                    <div class="form-group">
+                        <!--<label for="name">Your Name</label>-->
+                        {{form.firstname.label(class="label")}}
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                <!--<input type="text" class="form-control" name="name" id="name"  placeholder="Enter your Name"/>-->
+                                
+                                {{form.firstname(class="prof_class",placeholder="Enter your first name")}}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <!--<label for="name">Your Name</label>-->
+                        {{form.lastname.label(class="label")}}
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                               <!-- <input type="text" class="form-control" name="name" id="name"  placeholder="Enter your Name"/>-->
+            
+                                {{form.lastname(class="prof_class",placeholder="Enter your Last Name")}}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <!--<label for="name">Your Name</label>-->
+                        {{form.gender.label(class="label")}}
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-genderless" aria-hidden="true"></i></span>
+                               <!-- <input type="text" class="form-control" name="name" id="name"  placeholder="Enter your Name"/>-->
+            
+                                
+                                {{form.gender(class="prof_class",default="Select Gender")}}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <!--<label for="email">Your Email</label>-->
+                        {{form.email.label(class="label")}}
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                                <!--<input type="text" class="form-control" name="email" placeholder="Enter your Email"/>--> 
+                                {{form.email(class="prof_class",placeholder="e.g. jdoe@example.com")}}  
+                        </div>
+                    </div>
+
+                  <!--  <div class="form-group">
+                        <label for="username">Username</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="username" placeholder="Enter your Username"/>
+                            </div>
+                    </div> -->
+
+                    <div class="form-group">
+                        <!--<label for="password">Password</label>-->
+                        {{form.password.label(class="label")}}
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                               <!-- <input type="password" class="form-control" name="password" placeholder="Enter your Password"/>-->
+                                
+                                {{form.password(class="prof_class",placeholder="Enter your password")}}
+                            </div>
+                    </div>
+
+                    <div>
+                        {{form.submit}}
+                       <!-- <button type="submit">SUBMIT</button>-->
+                    </div>
+            
+                    
+                </form>
+            </div><!--main-center"-->
+        </div><!--main-->
+    </div><!--container-->
 {% endblock %}
