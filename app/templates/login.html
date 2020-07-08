@@ -1,14 +1,80 @@
 {% extends 'base.html' %} 
 {% block main %}
 
+
+
+
+<!DOCTYPE html>
+<html>
 <head>
+  <title>Login</title>
+  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/login.css') }}">
+  
+  <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+</head>  
+<body>
+  <div class="container">
+    <div class="d-flex justify-content-center h-100">
+      <div class="card">
+        <div class="card-header">
+          <h3>Log In</h3>
+          {% include 'flash_messages.html' %}
+        </div>
+        <div class="card-body">
+          <form>
+            <form action="{{ url_for('login') }}" method="post">
+              {{ form.csrf_token }}
+            <div class="input-group form-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+              </div>
+              <!--<input type="text" class="form-control" placeholder="Email"> 
+              {{ form.email.label }}-->
+              {{ form.email(class='form-control', placeholder="Enter your email address") }}
+            </div>
+            <div class="input-group form-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-key"></i></span>
+              </div>
+              
+             <!-- {{ form.password.label }}-->
+              {{ form.password(class='form-control',placeholder="Enter your password") }}
+            </div>
+           <div class="row align-items-center remember">
+              <input type="checkbox">Remember Me
+            </div> 
+            <div class="form-group">
+              <input type="submit" value="Login" class="btn float-right login_btn">
+            </div>
+          </form>
+        </div>
+        
+        <div class="card-footer">
+          <div class="d-flex justify-content-center links">
+            Don't have an account?<a href="#">Sign Up</a>
+          </div>
+          <div class="d-flex justify-content-center">
+            <a href="#">Forgot your password?</a>
+          </div>
+        </div>
+      
+      </div>
+    </div>
+  </div>
+  </body>
+  </html>
+
+
+<!--
+     
+ <head>
   <title>Login</title>
   <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/login.css') }}">
 </head>
 <body>
   <div class= "container">
     <div class = "form">
-      <div class="login-form center-block">
+      <div class="login-form ">
         <h2>Please Login</h2>
         {% include 'flash_messages.html' %}
         <form action="{{ url_for('login') }}" method="post">
@@ -31,7 +97,7 @@
   
 
 </body>
-  
-  
+
+-->
 
 {% endblock %}
